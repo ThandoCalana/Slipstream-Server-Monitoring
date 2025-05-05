@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Vongola10
+      POSTGRES_DB: SSM
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: fastapi_api
+    environment:
+      DATABASE_URL: postgresql://postgres:Vongola10@db:5432/SSM
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    entrypoint: >
+      sh -c "while ! nc -z db 5432; do
+               echo 'Waiting for DB...';
+               sleep 1;
+             done;
+             uvicorn api_server:app --host 0.0.0.0 --port 8000"
+  
+volumes:
+  postgres_data:
