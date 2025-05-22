@@ -1,7 +1,7 @@
 # ==== CONFIGURATION ====
 $collectorName = "ServerMetrics"
 $outputDir = "C:\Metrics"
-$sampleInterval = 10  # seconds
+$sampleInterval = 5  # seconds
 $outputFile = Join-Path $outputDir $collectorName
 
 # ==== Ensure Output Directory Exists ====
@@ -17,8 +17,6 @@ $diskInfo = Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'"
 $totalDiskBytes = $diskInfo.Size
 $totalDiskGB = [math]::Round($totalDiskBytes / 1GB, 2)
 
-Write-Host "Total RAM: $totalRAMGB GB"
-Write-Host "Total Disk Size (C:): $totalDiskGB GB"
 
 # ==== Delete Existing Collector (If Exists) ====
 try {
@@ -32,7 +30,8 @@ $cmd = @(
     "-c",
     "`"\Processor(_Total)\% Processor Time`"",
     "`"\Memory\% Committed Bytes In Use`"",
-    "`"\LogicalDisk(C:)\% Free Space`"",
+    "`"\LogicalDisk(C:)\Disk Read Bytes/sec`"",
+    "`"\LogicalDisk(C:)\Disk Write Bytes/sec`"",
     "-si", "$sampleInterval",
     "-f", "csv",
     "-o", "`"$outputFile`""
@@ -47,7 +46,6 @@ Write-Host "Collector '$collectorName' started."
 Write-Host "Output directory: $outputDir"
 Write-Host "Sampling every $sampleInterval seconds.`n"
 
-Write-Host "Reminder:"
 Write-Host "- Total RAM: $totalRAMGB GB (static)"
 Write-Host "- Total Disk Size (C:): $totalDiskGB GB (static)"
-Write-Host "- To get % Disk Used on C:, calculate: 100 - [% Free Space] from CSV"
+Write-Host "- Disk Read/Write reported in Bytes/sec. Divide by 1024 in post-processing to get KB/s"

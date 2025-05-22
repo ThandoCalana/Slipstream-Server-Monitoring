@@ -1,0 +1,18 @@
+-- Table: public.overall_metrics
+
+-- DROP TABLE IF EXISTS public.overall_metrics;
+
+CREATE TABLE IF NOT EXISTS public.overall_metrics
+(
+    id smallint NOT NULL,
+    date date,
+    "time" time without time zone,
+    cpu_usage real,
+    ram_usage real,
+    disk_read real,
+    disk_write real,
+    CONSTRAINT "overall_metrics_pkey" PRIMARY KEY (id)
+)
+
+
+SELECT * FROM public.overall_metrics;

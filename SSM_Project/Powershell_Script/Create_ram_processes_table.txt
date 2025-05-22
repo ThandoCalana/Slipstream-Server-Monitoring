@@ -1,0 +1,17 @@
+-- Table: public.ram_processes
+
+-- DROP TABLE IF EXISTS public.ram_processes;
+
+CREATE TABLE IF NOT EXISTS public.ram_processes
+(
+    id smallint NOT NULL,
+    date date,
+    "time" time without time zone,
+    service_name character varying COLLATE pg_catalog."default",
+    cpu_usage real,
+    ram_usage_MB real,
+    CONSTRAINT ram_processes_pkey PRIMARY KEY (id)
+)
+
+
+SELECT * FROM public.ram_processes;
