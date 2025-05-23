@@ -3,7 +3,7 @@
   <Nodes>
     <Node ToolID="3">
       <GuiSettings Plugin="AlteryxBasePluginsGui.DbFileInput.DbFileInput">
-        <Position x="54" y="163" />
+        <Position x="54" y="222" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -28,6 +28,9 @@
           <DefaultAnnotationText>RAM_Processes.csv</DefaultAnnotationText>
           <Left value="False" />
         </Annotation>
+        <Dependencies>
+          <Implicit />
+        </Dependencies>
         <MetaInfo connection="Output">
           <RecordInfo>
             <Field name="Timestamp" size="254" source="File: C:\Metrics\RAM_Processes.csv" type="V_WString" />
@@ -41,7 +44,7 @@
     </Node>
     <Node ToolID="13">
       <GuiSettings Plugin="AlteryxBasePluginsGui.TextToColumns.TextToColumns">
-        <Position x="150" y="162" />
+        <Position x="150" y="221" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -62,7 +65,7 @@
     </Node>
     <Node ToolID="14">
       <GuiSettings Plugin="AlteryxBasePluginsGui.DateTime.DateTime">
-        <Position x="270" y="163" />
+        <Position x="270" y="222" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -83,7 +86,7 @@ yyyy-MM-dd</DefaultAnnotationText>
     </Node>
     <Node ToolID="17">
       <GuiSettings Plugin="AlteryxBasePluginsGui.AlteryxSelect.AlteryxSelect">
-        <Position x="462" y="163" />
+        <Position x="462" y="222" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -111,7 +114,7 @@ yyyy-MM-dd</DefaultAnnotationText>
     </Node>
     <Node ToolID="23">
       <GuiSettings Plugin="AlteryxBasePluginsGui.DbFileOutput.DbFileOutput">
-        <Position x="558" y="163" />
+        <Position x="558" y="222" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -119,6 +122,7 @@ yyyy-MM-dd</DefaultAnnotationText>
           <Passwords />
           <Disable>False</Disable>
           <FormatSpecificOptions UseDcm="true" MaxRecords="" Format="23">
+            <SpatialObjSize>8000</SpatialObjSize>
             <TableStyle>Quoted</TableStyle>
             <TransactionMessages>False</TransactionMessages>
             <Table>public."ram_processes"</Table>
@@ -130,6 +134,7 @@ yyyy-MM-dd</DefaultAnnotationText>
             </KeyForUpdate>
             <OutputOption>Upsert</OutputOption>
             <Connection DcmType="ConnectionId">d20450a3-8849-4746-818a-209b6b651620</Connection>
+            <Projection />
             <PostSQL />
             <TransactionSize>10000</TransactionSize>
             <PreSQL />
@@ -138,7 +143,7 @@ yyyy-MM-dd</DefaultAnnotationText>
         </Configuration>
         <Annotation DisplayMode="2">
           <Name />
-          <DefaultAnnotationText>dcm:Invalid connection
+          <DefaultAnnotationText>dcm:PostgreSQL ODBC — Username and password
 Table=public."ram_processes"</DefaultAnnotationText>
           <Left value="False" />
         </Annotation>
@@ -147,7 +152,7 @@ Table=public."ram_processes"</DefaultAnnotationText>
     </Node>
     <Node ToolID="24">
       <GuiSettings Plugin="AlteryxBasePluginsGui.RecordID.RecordID">
-        <Position x="366" y="163" />
+        <Position x="366" y="222" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -168,7 +173,7 @@ Table=public."ram_processes"</DefaultAnnotationText>
     </Node>
     <Node ToolID="1">
       <GuiSettings Plugin="AlteryxBasePluginsGui.DbFileInput.DbFileInput">
-        <Position x="54" y="55" />
+        <Position x="54" y="114" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -207,7 +212,7 @@ Table=public."ram_processes"</DefaultAnnotationText>
     </Node>
     <Node ToolID="6">
       <GuiSettings Plugin="AlteryxBasePluginsGui.AlteryxSelect.AlteryxSelect">
-        <Position x="462" y="55" />
+        <Position x="462" y="114" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -236,7 +241,7 @@ Table=public."ram_processes"</DefaultAnnotationText>
     </Node>
     <Node ToolID="7">
       <GuiSettings Plugin="AlteryxBasePluginsGui.Formula.Formula">
-        <Position x="594" y="55" />
+        <Position x="594" y="114" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -261,7 +266,7 @@ cpu_usage = Ro...</DefaultAnnotationText>
     </Node>
     <Node ToolID="8">
       <GuiSettings Plugin="AlteryxBasePluginsGui.TextToColumns.TextToColumns">
-        <Position x="149" y="55" />
+        <Position x="149" y="114" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -283,7 +288,7 @@ cpu_usage = Ro...</DefaultAnnotationText>
     </Node>
     <Node ToolID="9">
       <GuiSettings Plugin="AlteryxBasePluginsGui.DateTime.DateTime">
-        <Position x="270" y="54" />
+        <Position x="270" y="113" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -304,7 +309,7 @@ MM/dd/yyyy</DefaultAnnotationText>
     </Node>
     <Node ToolID="18">
       <GuiSettings Plugin="AlteryxBasePluginsGui.DbFileOutput.DbFileOutput">
-        <Position x="810" y="55" />
+        <Position x="810" y="114" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -312,6 +317,7 @@ MM/dd/yyyy</DefaultAnnotationText>
           <Passwords />
           <Disable>False</Disable>
           <FormatSpecificOptions UseDcm="true" MaxRecords="" Format="23">
+            <SpatialObjSize>8000</SpatialObjSize>
             <TableStyle>None</TableStyle>
             <AppendMap>
               <AppendMapping mode="ByName" />
@@ -326,6 +332,7 @@ MM/dd/yyyy</DefaultAnnotationText>
             </KeyForUpdate>
             <OutputOption>Upsert</OutputOption>
             <Connection DcmType="ConnectionId">d20450a3-8849-4746-818a-209b6b651620</Connection>
+            <Projection />
             <PostSQL />
             <TransactionSize>10000</TransactionSize>
             <PreSQL />
@@ -334,7 +341,7 @@ MM/dd/yyyy</DefaultAnnotationText>
         </Configuration>
         <Annotation DisplayMode="2">
           <Name />
-          <DefaultAnnotationText>dcm:Invalid connection
+          <DefaultAnnotationText>dcm:PostgreSQL ODBC — Username and password
 Table=public."Overall_Metrics"</DefaultAnnotationText>
           <Left value="False" />
         </Annotation>
@@ -343,7 +350,7 @@ Table=public."Overall_Metrics"</DefaultAnnotationText>
     </Node>
     <Node ToolID="20">
       <GuiSettings Plugin="AlteryxBasePluginsGui.RecordID.RecordID">
-        <Position x="366" y="55" />
+        <Position x="366" y="114" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -364,7 +371,7 @@ Table=public."Overall_Metrics"</DefaultAnnotationText>
     </Node>
     <Node ToolID="2">
       <GuiSettings Plugin="AlteryxBasePluginsGui.DbFileInput.DbFileInput">
-        <Position x="55" y="271" />
+        <Position x="55" y="330" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -389,6 +396,9 @@ Table=public."Overall_Metrics"</DefaultAnnotationText>
           <DefaultAnnotationText>CPU_Processes.csv</DefaultAnnotationText>
           <Left value="False" />
         </Annotation>
+        <Dependencies>
+          <Implicit />
+        </Dependencies>
         <MetaInfo connection="Output">
           <RecordInfo>
             <Field name="Timestamp" size="254" source="File: C:\Metrics\CPU_Processes.csv" type="V_WString" />
@@ -402,7 +412,7 @@ Table=public."Overall_Metrics"</DefaultAnnotationText>
     </Node>
     <Node ToolID="10">
       <GuiSettings Plugin="AlteryxBasePluginsGui.TextToColumns.TextToColumns">
-        <Position x="152" y="271" />
+        <Position x="152" y="330" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -423,7 +433,7 @@ Table=public."Overall_Metrics"</DefaultAnnotationText>
     </Node>
     <Node ToolID="11">
       <GuiSettings Plugin="AlteryxBasePluginsGui.DateTime.DateTime">
-        <Position x="270" y="270" />
+        <Position x="270" y="329" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -444,7 +454,7 @@ yyyy-MM-dd</DefaultAnnotationText>
     </Node>
     <Node ToolID="16">
       <GuiSettings Plugin="AlteryxBasePluginsGui.AlteryxSelect.AlteryxSelect">
-        <Position x="462" y="271" />
+        <Position x="462" y="330" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -473,7 +483,7 @@ yyyy-MM-dd</DefaultAnnotationText>
     </Node>
     <Node ToolID="21">
       <GuiSettings Plugin="AlteryxBasePluginsGui.RecordID.RecordID">
-        <Position x="366" y="271" />
+        <Position x="366" y="330" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -494,7 +504,7 @@ yyyy-MM-dd</DefaultAnnotationText>
     </Node>
     <Node ToolID="22">
       <GuiSettings Plugin="AlteryxBasePluginsGui.DbFileOutput.DbFileOutput">
-        <Position x="558" y="271" />
+        <Position x="558" y="330" />
       </GuiSettings>
       <Properties>
         <Configuration>
@@ -502,6 +512,7 @@ yyyy-MM-dd</DefaultAnnotationText>
           <Passwords />
           <Disable>False</Disable>
           <FormatSpecificOptions UseDcm="true" MaxRecords="" Format="23">
+            <SpatialObjSize>8000</SpatialObjSize>
             <TableStyle>None</TableStyle>
             <AppendMap>
               <AppendMapping mode="ByName" />
@@ -516,6 +527,7 @@ yyyy-MM-dd</DefaultAnnotationText>
             </KeyForUpdate>
             <OutputOption>Upsert</OutputOption>
             <Connection DcmType="ConnectionId">d20450a3-8849-4746-818a-209b6b651620</Connection>
+            <Projection />
             <PostSQL />
             <TransactionSize>10000</TransactionSize>
             <PreSQL />
@@ -524,7 +536,7 @@ yyyy-MM-dd</DefaultAnnotationText>
         </Configuration>
         <Annotation DisplayMode="2">
           <Name />
-          <DefaultAnnotationText>dcm:Invalid connection
+          <DefaultAnnotationText>dcm:PostgreSQL ODBC — Username and password
 Table=public."cpu_processes"</DefaultAnnotationText>
           <Left value="False" />
         </Annotation>
