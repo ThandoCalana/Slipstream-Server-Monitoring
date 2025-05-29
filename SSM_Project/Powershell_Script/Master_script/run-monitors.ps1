@@ -1,4 +1,3 @@
-# Path to your scripts - adjust if needed
 $systemMetricsScript = "C:\Users\Tcala\OneDrive\Documents\Slipstream\Slipstream-Server-Monitoring\SSM_Project\Powershell_Script\Master_script\system.ps1"
 $cpuScript = "C:\Users\Tcala\OneDrive\Documents\Slipstream\Slipstream-Server-Monitoring\SSM_Project\Powershell_Script\Master_script\cpu.ps1"
 $ramScript = "C:\Users\Tcala\OneDrive\Documents\Slipstream\Slipstream-Server-Monitoring\SSM_Project\Powershell_Script\Master_script\ram.ps1"
@@ -12,7 +11,7 @@ while ($true) {
 
     if (-not [int]::TryParse($systemMetricsId, [ref]$null)) {
         Write-Error "Failed to get valid system_metrics.id from system script. Output was: $systemMetricsId"
-        # Optionally, skip this cycle and continue after 60 seconds
+    
         Start-Sleep -Seconds 30
         continue
     }
