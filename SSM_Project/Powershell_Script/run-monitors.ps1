@@ -1,11 +1,15 @@
-# === Define Script Paths ===
-$metricsScript = "C:\Users\ThandoCalana\Downloads\Powershell_Script\Collector_Script.ps1"
-$cpuScript = "C:\Users\ThandoCalana\Downloads\Powershell_Script\CPU_Processes.ps1"
-$ramScript = "C:\Users\ThandoCalana\Downloads\Powershell_Script\RAM_Processes.ps1"
+$scriptDir = "C:\Users\Tcala\OneDrive\Documents\Slipstream\Slipstream-Server-Monitoring\SSM_Project\Powershell_Script"
 
-# === Launch as Background Jobs ===
-Start-Job -FilePath $metricsScript
-Start-Job -FilePath $cpuScript
-Start-Job -FilePath $ramScript
+# List of scripts to run
+$scripts = @(
+    "cpu.ps1",
+    "ram.ps1",
+    "disk.ps1",
+    "system.ps1"
+)
 
-Write-Host "All monitoring scripts launched as background jobs."
+foreach ($script in $scripts) {
+    $scriptPath = Join-Path $scriptDir $script
+    Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`""
+    Write-Host "Started $script"
+}
