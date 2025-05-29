@@ -4,7 +4,7 @@
 
 CREATE TABLE IF NOT EXISTS public.cpu_processes
 (
-    timestamp TIMESTAMP,
+    timestamp TIMESTAMPTZ,
     system_metrics_id INT REFERENCES system_metrics(id),
     pid INTEGER,
     display_name TEXT,
