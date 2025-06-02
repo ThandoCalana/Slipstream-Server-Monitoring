@@ -1,6 +1,6 @@
-# ==== CONFIGURATION ====
-$sampleInterval = 5  # seconds
-$topN = 10
+param(
+    [int]$SystemMetricsId
+)
 
 # ==== PostgreSQL Connection Setup ====
 $ConnectionString = "Driver={PostgreSQL Unicode}; Server=localhost; Port=5432; Database=SSM; Uid=postgres; Pwd=Vongola10;"
@@ -10,54 +10,53 @@ $connection.Open()
 # ==== Get Total Physical RAM ====
 $totalRAMBytes = (Get-CimInstance -ClassName Win32_ComputerSystem).TotalPhysicalMemory
 
-# ==== Sampling Loop ====
-while ($true) {
-    $timestamp = Get-Date
-    $services = Get-WmiObject Win32_Service
+# ==== Get Process and Service Data ====
+$timestamp = Get-Date
+$services = Get-WmiObject Win32_Service
 
-    $ramStats = @()
+$ramStats = @()
 
-    # ==== Get memory stats for running processes ====
-    Get-Process | ForEach-Object {
-        $proc = $_
-        $ramUsedBytes = $proc.WorkingSet64
-        if ($ramUsedBytes -gt 0) {
-            $ramUsedGB = [math]::Round($ramUsedBytes / 1GB, 4)
-            $ramPercent = [math]::Round(($ramUsedBytes / $totalRAMBytes) * 100, 2)
+Get-Process | ForEach-Object {
+    $proc = $_
+    $ramUsedBytes = $proc.WorkingSet64
 
-            $svc = $services | Where-Object { $_.ProcessId -eq $proc.Id }
-            $displayName = if ($svc) { $svc.DisplayName } else { $proc.ProcessName }
+    if ($ramUsedBytes -gt 0) {
+        $ramUsedGB = [math]::Round($ramUsedBytes / 1GB, 4)
+        $ramPercent = [math]::Round(($ramUsedBytes / $totalRAMBytes) * 100, 2)
 
-            $ramStats += [PSCustomObject]@{
-                PID = $proc.Id
-                Name = $displayName
-                RAMPercent = $ramPercent
-                RAMUsedGB = $ramUsedGB
-            }
+        $svc = $services | Where-Object { $_.ProcessId -eq $proc.Id }
+        $displayName = if ($svc) { $svc.DisplayName } else { $proc.ProcessName }
+
+        $ramStats += [PSCustomObject]@{
+            PID = $proc.Id
+            Name = $displayName
+            RAMPercent = $ramPercent
+            RAMUsedGB = $ramUsedGB
         }
     }
-
-    $topProcesses = $ramStats | Sort-Object -Property RAMPercent -Descending | Select-Object -First $topN
-
-    foreach ($proc in $topProcesses) {
-        $cmd = $connection.CreateCommand()
-        $cmd.CommandText = @"
-            INSERT INTO ram_processes (timestamp, pid, display_name, ram_percent, ram_used_gb)
-            VALUES (?, ?, ?, ?, ?)
-"@
-        $cmd.Parameters.Add((New-Object System.Data.Odbc.OdbcParameter("", [System.DateTime]$timestamp))) | Out-Null
-        $cmd.Parameters.Add((New-Object System.Data.Odbc.OdbcParameter("", [System.Int32]$proc.PID)))      | Out-Null
-        $cmd.Parameters.Add((New-Object System.Data.Odbc.OdbcParameter("", [System.String]$proc.Name)))    | Out-Null
-        $cmd.Parameters.Add((New-Object System.Data.Odbc.OdbcParameter("", [System.Double]$proc.RAMPercent))) | Out-Null
-        $cmd.Parameters.Add((New-Object System.Data.Odbc.OdbcParameter("", [System.Double]$proc.RAMUsedGB)))  | Out-Null
-
-        try {
-            $cmd.ExecuteNonQuery()
-            Write-Host "[$timestamp] PID $($proc.PID) [$($proc.Name)]: $($proc.RAMPercent)% - $($proc.RAMUsedGB) GB"
-        } catch {
-            Write-Host "Error inserting PID $($proc.PID): $_"
-        }
-    }
-
-    Start-Sleep -Seconds $sampleInterval
 }
+
+$topN = 10
+$topProcesses = $ramStats | Sort-Object -Property RAMPercent -Descending | Select-Object -First $topN
+
+foreach ($proc in $topProcesses) {
+    $cmd = $connection.CreateCommand()
+    $cmd.CommandText = @"
+        INSERT INTO ram_processes (system_metrics_id, pid, display_name, ram_percent, ram_used_gb)
+        VALUES (?, ?, ?, ?, ?)
+"@
+    $cmd.Parameters.Add((New-Object System.Data.Odbc.OdbcParameter("", [System.Int32]$SystemMetricsId))) | Out-Null
+    $cmd.Parameters.Add((New-Object System.Data.Odbc.OdbcParameter("", [System.Int32]$proc.PID)))        | Out-Null
+    $cmd.Parameters.Add((New-Object System.Data.Odbc.OdbcParameter("", [System.String]$proc.Name)))      | Out-Null
+    $cmd.Parameters.Add((New-Object System.Data.Odbc.OdbcParameter("", [System.Double]$proc.RAMPercent)))| Out-Null
+    $cmd.Parameters.Add((New-Object System.Data.Odbc.OdbcParameter("", [System.Double]$proc.RAMUsedGB))) | Out-Null
+
+    try {
+        $cmd.ExecuteNonQuery()
+        Write-Host "[$timestamp] PID $($proc.PID) [$($proc.Name)]: $($proc.RAMPercent)% - $($proc.RAMUsedGB) GB"
+    } catch {
+        Write-Host "Error inserting PID $($proc.PID): $_"
+    }
+}
+
+$connection.Close()

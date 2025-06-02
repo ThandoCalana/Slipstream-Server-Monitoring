@@ -9,7 +9,9 @@ CREATE TABLE IF NOT EXISTS public.system_metrics
     cpu_percent DOUBLE PRECISION,
     ram_percent DOUBLE PRECISION,
     disk_free_gb DOUBLE PRECISION,
-    disk_used_percent DOUBLE PRECISION
+    disk_used_percent DOUBLE PRECISION,
+    mem_used DOUBLE PRECISION,
+    mem_free DOUBLE PRECISION
 )
 
 

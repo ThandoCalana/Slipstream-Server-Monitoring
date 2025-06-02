@@ -4,13 +4,12 @@
 
 CREATE TABLE IF NOT EXISTS public.ram_processes
 (
-    timestamp TIMESTAMP,
     system_metrics_id INT REFERENCES system_metrics(id),
     pid INTEGER,
     display_name TEXT,
     ram_percent DOUBLE PRECISION,
     ram_used_gb DOUBLE PRECISION 
-)
+);
 
 
 SELECT * FROM public.ram_processes;
