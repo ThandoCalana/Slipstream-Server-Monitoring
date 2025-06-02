@@ -1,0 +1,16 @@
+-- Table: public.disk_processes
+
+-- DROP TABLE IF EXISTS public.disk_processes;
+
+CREATE TABLE public.disk_processes 
+(
+    system_metrics_id INT REFERENCES system_metrics(id),
+    pid INTEGER,
+    display_name TEXT,
+    read_kb_s DOUBLE PRECISION,
+    write_kb_s DOUBLE PRECISION,
+    total_disk_kb_s DOUBLE PRECISION
+);
+
+
+SELECT * FROM public.disk_processes;

@@ -1,0 +1,660 @@
+<?xml version="1.0"?>
+<AlteryxDocument yxmdVer="2024.2" RunE2="T">
+  <Nodes>
+    <Node ToolID="3">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.DbFileInput.DbFileInput">
+        <Position x="54" y="222" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Passwords />
+          <File RecordLimit="" SearchSubDirs="False" FileFormat="0" OutputFileName="">C:\Metrics\RAM_Processes.csv</File>
+          <FormatSpecificOptions>
+            <HeaderRow>True</HeaderRow>
+            <IgnoreErrors>False</IgnoreErrors>
+            <AllowShareWrite>False</AllowShareWrite>
+            <ImportLine>1</ImportLine>
+            <FieldLen>254</FieldLen>
+            <SingleThreadRead>False</SingleThreadRead>
+            <IgnoreQuotes>DoubleQuotes</IgnoreQuotes>
+            <Delimeter>,</Delimeter>
+            <QuoteRecordBreak>False</QuoteRecordBreak>
+            <CodePage>28591</CodePage>
+          </FormatSpecificOptions>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>RAM Processes</AnnotationText>
+          <DefaultAnnotationText>RAM_Processes.csv</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+        <Dependencies>
+          <Implicit />
+        </Dependencies>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Timestamp" size="254" source="File: C:\Metrics\RAM_Processes.csv" type="V_WString" />
+            <Field name="Service Name" size="254" source="File: C:\Metrics\RAM_Processes.csv" type="V_WString" />
+            <Field name="CPU Usage %" size="254" source="File: C:\Metrics\RAM_Processes.csv" type="V_WString" />
+            <Field name="RAM Usage (MB)" size="254" source="File: C:\Metrics\RAM_Processes.csv" type="V_WString" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxDbFileInput" />
+    </Node>
+    <Node ToolID="13">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.TextToColumns.TextToColumns">
+        <Position x="150" y="221" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Field>Timestamp</Field>
+          <ErrorHandling>Last</ErrorHandling>
+          <RootName>Date</RootName>
+          <Delimeters value=" " />
+          <NumFields value="2" />
+          <Flags value="0" />
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxTextToColumns" />
+    </Node>
+    <Node ToolID="14">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.DateTime.DateTime">
+        <Position x="270" y="222" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <IsFrom value="False" />
+          <InputFieldName>Date1</InputFieldName>
+          <Language>English</Language>
+          <Format>yyyy-MM-dd</Format>
+          <OutputFieldName>Date</OutputFieldName>
+        </Configuration>
+        <Annotation DisplayMode="2">
+          <Name />
+          <DefaultAnnotationText>Convert Date1 From:
+yyyy-MM-dd</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxDateTime" />
+    </Node>
+    <Node ToolID="17">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.AlteryxSelect.AlteryxSelect">
+        <Position x="462" y="222" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <OrderChanged value="True" />
+          <CommaDecimal value="False" />
+          <SelectFields>
+            <SelectField field="RecordID" selected="True" rename="id" />
+            <SelectField field="Date" selected="True" rename="date" />
+            <SelectField field="Date2" selected="True" rename="time" type="Time" size="8" />
+            <SelectField field="Timestamp" selected="False" />
+            <SelectField field="Service Name" selected="True" rename="service_name" />
+            <SelectField field="CPU Usage %" selected="True" rename="cpu_usage" type="Float" size="4" />
+            <SelectField field="RAM Usage (MB)" selected="True" rename="ram_usage_mb" type="Float" size="4" />
+            <SelectField field="Date1" selected="False" />
+            <SelectField field="*Unknown" selected="True" />
+          </SelectFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxSelect" />
+    </Node>
+    <Node ToolID="23">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.DbFileOutput.DbFileOutput">
+        <Position x="558" y="222" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <File />
+          <Passwords />
+          <Disable>False</Disable>
+          <FormatSpecificOptions UseDcm="true" MaxRecords="" Format="23">
+            <SpatialObjSize>8000</SpatialObjSize>
+            <TableStyle>Quoted</TableStyle>
+            <TransactionMessages>False</TransactionMessages>
+            <Table>public."ram_processes"</Table>
+            <IgnoreDropTableSQLErrors>False</IgnoreDropTableSQLErrors>
+            <KeyForUpdate>
+              <KU_Fields>
+                <KU_Field key="id" />
+              </KU_Fields>
+            </KeyForUpdate>
+            <OutputOption>Upsert</OutputOption>
+            <Connection DcmType="ConnectionId">d20450a3-8849-4746-818a-209b6b651620</Connection>
+            <Projection />
+            <PostSQL />
+            <TransactionSize>10000</TransactionSize>
+            <PreSQL />
+          </FormatSpecificOptions>
+          <MultiFile value="False" />
+        </Configuration>
+        <Annotation DisplayMode="2">
+          <Name />
+          <DefaultAnnotationText>dcm:PostgreSQL ODBC — Username and password
+Table=public."ram_processes"</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxDbFileOutput" />
+    </Node>
+    <Node ToolID="24">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.RecordID.RecordID">
+        <Position x="366" y="222" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <FieldName>RecordID</FieldName>
+          <StartValue>1</StartValue>
+          <FieldType>Int32</FieldType>
+          <FieldSize>6</FieldSize>
+          <Position>0</Position>
+          <GroupFields orderChanged="False" />
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxRecordID" />
+    </Node>
+    <Node ToolID="1">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.DbFileInput.DbFileInput">
+        <Position x="54" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Passwords />
+          <File RecordLimit="" SearchSubDirs="False" FileFormat="0" OutputFileName="">C:\Metrics\ServerMetrics_000001.csv</File>
+          <FormatSpecificOptions>
+            <HeaderRow>True</HeaderRow>
+            <IgnoreErrors>False</IgnoreErrors>
+            <AllowShareWrite>False</AllowShareWrite>
+            <ImportLine>1</ImportLine>
+            <FieldLen>254</FieldLen>
+            <SingleThreadRead>False</SingleThreadRead>
+            <IgnoreQuotes>DoubleQuotes</IgnoreQuotes>
+            <Delimeter>,</Delimeter>
+            <QuoteRecordBreak>False</QuoteRecordBreak>
+            <CodePage>28591</CodePage>
+          </FormatSpecificOptions>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Overall Metrics</AnnotationText>
+          <DefaultAnnotationText>ServerMetrics_000001.csv</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="(PDH-CSV 4.0) (South Africa Standard Time)(-120)" size="254" source="File: C:\Metrics\ServerMetrics_000001.csv" type="V_String" />
+            <Field name="\\DESKTOP-IGCHBQ2\Processor(_Total)\% Processor Time" size="254" source="File: C:\Metrics\ServerMetrics_000001.csv" type="V_String" />
+            <Field name="\\DESKTOP-IGCHBQ2\Memory\% Committed Bytes In Use" size="254" source="File: C:\Metrics\ServerMetrics_000001.csv" type="V_String" />
+            <Field name="\\DESKTOP-IGCHBQ2\LogicalDisk(C:)\Disk Read Bytes/sec" size="254" source="File: C:\Metrics\ServerMetrics_000001.csv" type="V_String" />
+            <Field name="\\DESKTOP-IGCHBQ2\LogicalDisk(C:)\Disk Write Bytes/sec" size="254" source="File: C:\Metrics\ServerMetrics_000001.csv" type="V_String" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxDbFileInput" />
+    </Node>
+    <Node ToolID="6">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.AlteryxSelect.AlteryxSelect">
+        <Position x="462" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <OrderChanged value="True" />
+          <CommaDecimal value="False" />
+          <SelectFields>
+            <SelectField field="RecordID" selected="True" rename="id" type="Int16" size="2" />
+            <SelectField field="Date" selected="True" rename="date" />
+            <SelectField field="1" selected="False" rename="date" type="Date" size="10" />
+            <SelectField field="2" selected="True" rename="time" type="Time" size="8" />
+            <SelectField field="(PDH-CSV 4.0) (South Africa Standard Time)(-120)" selected="False" rename="Timestamp" type="Time" size="8" />
+            <SelectField field="\\DESKTOP-IGCHBQ2\Processor(_Total)\% Processor Time" selected="True" rename="cpu_usage" type="Float" size="4" />
+            <SelectField field="\\DESKTOP-IGCHBQ2\Memory\% Committed Bytes In Use" selected="True" rename="ram_usage" type="Float" size="4" />
+            <SelectField field="\\DESKTOP-IGCHBQ2\LogicalDisk(C:)\Disk Read Bytes/sec" selected="True" rename="disk_read" type="Float" size="4" />
+            <SelectField field="\\DESKTOP-IGCHBQ2\LogicalDisk(C:)\Disk Write Bytes/sec" selected="True" rename="disk_write" type="Float" size="4" />
+            <SelectField field="*Unknown" selected="True" />
+          </SelectFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxSelect" />
+    </Node>
+    <Node ToolID="7">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Formula.Formula">
+        <Position x="594" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <FormulaFields>
+            <FormulaField expression="[disk_read] / 1024.00" field="disk_read" size="4" type="Float" enabled="true" />
+            <FormulaField expression="[disk_write] /1024" field="disk_write" size="4" type="Float" enabled="true" />
+            <FormulaField expression="Round([cpu_usage], 0.02)" field="cpu_usage" size="4" type="Float" enabled="true" />
+            <FormulaField expression="Round([ram_usage], 0.02)" field="ram_usage" size="4" type="Float" enabled="true" />
+            <FormulaField expression="Round([disk_read], 0.02)" field="disk_read" size="4" type="Float" enabled="true" />
+            <FormulaField expression="Round([disk_write], 0.02)" field="disk_write" size="4" type="Float" enabled="true" />
+          </FormulaFields>
+        </Configuration>
+        <Annotation DisplayMode="2">
+          <Name />
+          <DefaultAnnotationText>disk_read = [disk_read] / 1024.00
+disk_write = [disk_write] /1024
+cpu_usage = Ro...</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFormula" />
+    </Node>
+    <Node ToolID="8">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.TextToColumns.TextToColumns">
+        <Position x="149" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Field>(PDH-CSV 4.0) (South Africa Standard Time)(-120)</Field>
+          <ErrorHandling>Last</ErrorHandling>
+          <RootName>
+          </RootName>
+          <Delimeters value=" " />
+          <NumFields value="2" />
+          <Flags value="0" />
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxTextToColumns" />
+    </Node>
+    <Node ToolID="9">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.DateTime.DateTime">
+        <Position x="270" y="113" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <IsFrom value="False" />
+          <InputFieldName>1</InputFieldName>
+          <Language>English</Language>
+          <Format>MM/dd/yyyy</Format>
+          <OutputFieldName>Date</OutputFieldName>
+        </Configuration>
+        <Annotation DisplayMode="2">
+          <Name />
+          <DefaultAnnotationText>Convert 1 From:
+MM/dd/yyyy</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxDateTime" />
+    </Node>
+    <Node ToolID="18">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.DbFileOutput.DbFileOutput">
+        <Position x="810" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <File />
+          <Passwords />
+          <Disable>False</Disable>
+          <FormatSpecificOptions UseDcm="true" MaxRecords="" Format="23">
+            <SpatialObjSize>8000</SpatialObjSize>
+            <TableStyle>None</TableStyle>
+            <AppendMap>
+              <AppendMapping mode="ByName" />
+            </AppendMap>
+            <TransactionMessages>False</TransactionMessages>
+            <Table>public."Overall_Metrics"</Table>
+            <IgnoreDropTableSQLErrors>False</IgnoreDropTableSQLErrors>
+            <KeyForUpdate>
+              <KU_Fields>
+                <KU_Field key="id" />
+              </KU_Fields>
+            </KeyForUpdate>
+            <OutputOption>Upsert</OutputOption>
+            <Connection DcmType="ConnectionId">d20450a3-8849-4746-818a-209b6b651620</Connection>
+            <Projection />
+            <PostSQL />
+            <TransactionSize>10000</TransactionSize>
+            <PreSQL />
+          </FormatSpecificOptions>
+          <MultiFile value="False" />
+        </Configuration>
+        <Annotation DisplayMode="2">
+          <Name />
+          <DefaultAnnotationText>dcm:PostgreSQL ODBC — Username and password
+Table=public."Overall_Metrics"</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxDbFileOutput" />
+    </Node>
+    <Node ToolID="20">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.RecordID.RecordID">
+        <Position x="366" y="114" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <FieldName>RecordID</FieldName>
+          <StartValue>1</StartValue>
+          <FieldType>Int32</FieldType>
+          <FieldSize>6</FieldSize>
+          <Position>0</Position>
+          <GroupFields orderChanged="False" />
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxRecordID" />
+    </Node>
+    <Node ToolID="2">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.DbFileInput.DbFileInput">
+        <Position x="55" y="330" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Passwords />
+          <File RecordLimit="" SearchSubDirs="False" FileFormat="0" OutputFileName="">C:\Metrics\CPU_Processes.csv</File>
+          <FormatSpecificOptions>
+            <HeaderRow>True</HeaderRow>
+            <IgnoreErrors>False</IgnoreErrors>
+            <AllowShareWrite>False</AllowShareWrite>
+            <ImportLine>1</ImportLine>
+            <FieldLen>254</FieldLen>
+            <SingleThreadRead>False</SingleThreadRead>
+            <IgnoreQuotes>DoubleQuotes</IgnoreQuotes>
+            <Delimeter>,</Delimeter>
+            <QuoteRecordBreak>False</QuoteRecordBreak>
+            <CodePage>28591</CodePage>
+          </FormatSpecificOptions>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>CPU Processes</AnnotationText>
+          <DefaultAnnotationText>CPU_Processes.csv</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+        <Dependencies>
+          <Implicit />
+        </Dependencies>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Timestamp" size="254" source="File: C:\Metrics\CPU_Processes.csv" type="V_WString" />
+            <Field name="Service Name" size="254" source="File: C:\Metrics\CPU_Processes.csv" type="V_WString" />
+            <Field name="CPU Usage %" size="254" source="File: C:\Metrics\CPU_Processes.csv" type="V_WString" />
+            <Field name="RAM Usage (MB)" size="254" source="File: C:\Metrics\CPU_Processes.csv" type="V_WString" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxDbFileInput" />
+    </Node>
+    <Node ToolID="10">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.TextToColumns.TextToColumns">
+        <Position x="152" y="330" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Field>Timestamp</Field>
+          <ErrorHandling>Last</ErrorHandling>
+          <RootName>Date</RootName>
+          <Delimeters value=" " />
+          <NumFields value="2" />
+          <Flags value="0" />
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxTextToColumns" />
+    </Node>
+    <Node ToolID="11">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.DateTime.DateTime">
+        <Position x="270" y="329" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <IsFrom value="False" />
+          <InputFieldName>Date1</InputFieldName>
+          <Language>English</Language>
+          <Format>yyyy-MM-dd</Format>
+          <OutputFieldName>Date</OutputFieldName>
+        </Configuration>
+        <Annotation DisplayMode="2">
+          <Name />
+          <DefaultAnnotationText>Convert Date1 From:
+yyyy-MM-dd</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxDateTime" />
+    </Node>
+    <Node ToolID="16">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.AlteryxSelect.AlteryxSelect">
+        <Position x="462" y="330" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <OrderChanged value="True" />
+          <CommaDecimal value="False" />
+          <SelectFields>
+            <SelectField field="RecordID" selected="True" rename="id" />
+            <SelectField field="Date" selected="True" rename="date" />
+            <SelectField field="Date2" selected="True" rename="time" type="Time" size="8" />
+            <SelectField field="Timestamp" selected="False" />
+            <SelectField field="Service Name" selected="True" rename="service_name" />
+            <SelectField field="CPU Usage %" selected="True" rename="cpu_usage" type="Float" size="4" />
+            <SelectField field="RAM Usage %" selected="False" rename="ram_usage" type="Float" size="4" />
+            <SelectField field="Date1" selected="False" />
+            <SelectField field="RAM Usage (MB)" selected="True" rename="ram_usage_MB" />
+            <SelectField field="*Unknown" selected="True" />
+          </SelectFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxSelect" />
+    </Node>
+    <Node ToolID="21">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.RecordID.RecordID">
+        <Position x="366" y="330" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <FieldName>RecordID</FieldName>
+          <StartValue>1</StartValue>
+          <FieldType>Int32</FieldType>
+          <FieldSize>6</FieldSize>
+          <Position>0</Position>
+          <GroupFields orderChanged="False" />
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxRecordID" />
+    </Node>
+    <Node ToolID="22">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.DbFileOutput.DbFileOutput">
+        <Position x="558" y="330" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <File />
+          <Passwords />
+          <Disable>False</Disable>
+          <FormatSpecificOptions UseDcm="true" MaxRecords="" Format="23">
+            <SpatialObjSize>8000</SpatialObjSize>
+            <TableStyle>None</TableStyle>
+            <AppendMap>
+              <AppendMapping mode="ByName" />
+            </AppendMap>
+            <TransactionMessages>False</TransactionMessages>
+            <Table>public."cpu_processes"</Table>
+            <IgnoreDropTableSQLErrors>False</IgnoreDropTableSQLErrors>
+            <KeyForUpdate>
+              <KU_Fields>
+                <KU_Field key="id" />
+              </KU_Fields>
+            </KeyForUpdate>
+            <OutputOption>Upsert</OutputOption>
+            <Connection DcmType="ConnectionId">d20450a3-8849-4746-818a-209b6b651620</Connection>
+            <Projection />
+            <PostSQL />
+            <TransactionSize>10000</TransactionSize>
+            <PreSQL />
+          </FormatSpecificOptions>
+          <MultiFile value="False" />
+        </Configuration>
+        <Annotation DisplayMode="2">
+          <Name />
+          <DefaultAnnotationText>dcm:PostgreSQL ODBC — Username and password
+Table=public."cpu_processes"</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxDbFileOutput" />
+    </Node>
+  </Nodes>
+  <Connections>
+    <Connection>
+      <Origin ToolID="3" Connection="Output" />
+      <Destination ToolID="13" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="13" Connection="Output" />
+      <Destination ToolID="14" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="14" Connection="Output" />
+      <Destination ToolID="24" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="17" Connection="Output" />
+      <Destination ToolID="23" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="24" Connection="Output" />
+      <Destination ToolID="17" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="1" Connection="Output" />
+      <Destination ToolID="8" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="6" Connection="Output" />
+      <Destination ToolID="7" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="7" Connection="Output" />
+      <Destination ToolID="18" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="8" Connection="Output" />
+      <Destination ToolID="9" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="9" Connection="Output" />
+      <Destination ToolID="20" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="20" Connection="Output" />
+      <Destination ToolID="6" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="2" Connection="Output" />
+      <Destination ToolID="10" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="10" Connection="Output" />
+      <Destination ToolID="11" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="11" Connection="Output" />
+      <Destination ToolID="21" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="16" Connection="Output" />
+      <Destination ToolID="22" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="21" Connection="Output" />
+      <Destination ToolID="16" Connection="Input" />
+    </Connection>
+  </Connections>
+  <Properties>
+    <Memory default="True" />
+    <GlobalRecordLimit value="0" />
+    <TempFiles default="True" />
+    <Annotation on="True" includeToolName="False" />
+    <ConvErrorLimit value="10" />
+    <ConvErrorLimit_Stop value="False" />
+    <CancelOnError value="False" />
+    <DisableBrowse value="False" />
+    <EnablePerformanceProfiling value="False" />
+    <RunWithE2 value="True" />
+    <PredictiveToolsCodePage value="1252" />
+    <DisableAllOutput value="False" />
+    <ShowAllMacroMessages value="False" />
+    <ShowConnectionStatusIsOn value="True" />
+    <ShowConnectionStatusOnlyWhenRunning value="True" />
+    <ZoomLevel value="0" />
+    <LayoutType>Horizontal</LayoutType>
+    <IsTemplate value="False" />
+    <MetaInfo>
+      <NameIsFileName value="True" />
+      <Name>DB Load workflow</Name>
+      <Description />
+      <RootToolName />
+      <ToolVersion />
+      <ToolInDb value="False" />
+      <CategoryName />
+      <SearchTags />
+      <Author />
+      <Company />
+      <Copyright />
+      <DescriptionLink actual="" displayed="" />
+      <Example>
+        <Description />
+        <File />
+      </Example>
+      <WorkflowId value="5ca0eb3f-f6a0-4639-bfe4-c40cadbc7b4b" />
+      <Telemetry>
+        <PreviousWorkflowId value="4ad9119d-cedb-48d5-a671-7fa70bcbaa13" />
+        <OriginWorkflowId value="4ad9119d-cedb-48d5-a671-7fa70bcbaa13" />
+      </Telemetry>
+      <PlatformWorkflowId value="" />
+    </MetaInfo>
+    <Events>
+      <Enabled value="True" />
+    </Events>
+  </Properties>
+</AlteryxDocument>

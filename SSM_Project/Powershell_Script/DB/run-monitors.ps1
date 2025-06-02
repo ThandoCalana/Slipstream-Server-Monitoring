@@ -1,7 +1,7 @@
-$systemMetricsScript = "C:\Users\ThandoCalana\Downloads\Powershell_Script\Master_script\system.ps1"
-$cpuScript = "C:\Users\ThandoCalana\Downloads\Powershell_Script\Master_script\cpu.ps1"
-$ramScript = "C:\Users\ThandoCalana\Downloads\Powershell_Script\Master_script\ram.ps1"
-$diskScript = "C:\Users\ThandoCalana\Downloads\Powershell_Script\Master_script\disk.ps1"
+$systemMetricsScript = "C:\Users\Tcala\OneDrive\Documents\Slipstream\Slipstream-Server-Monitoring\SSM_Project\Powershell_Script\system.ps1"
+$cpuScript = "C:\Users\Tcala\OneDrive\Documents\Slipstream\Slipstream-Server-Monitoring\SSM_Project\Powershell_Script\cpu.ps1"
+$ramScript = "C:\Users\Tcala\OneDrive\Documents\Slipstream\Slipstream-Server-Monitoring\SSM_Project\Powershell_Script\ram.ps1"
+$diskScript = "C:\Users\Tcala\OneDrive\Documents\Slipstream\Slipstream-Server-Monitoring\SSM_Project\Powershell_Script\disk.ps1"
 
 while ($true) {
     Write-Host "Starting metrics collection cycle at $(Get-Date -Format 'HH:mm:ss')..."
