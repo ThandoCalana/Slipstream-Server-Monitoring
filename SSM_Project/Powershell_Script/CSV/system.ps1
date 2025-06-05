@@ -1,6 +1,6 @@
-$intervalSeconds = 30
 $metricsDir = "C:\Metrics"
 $csvPath = "$metricsDir\system_metrics.csv"
+
 
 if (-not (Test-Path $metricsDir)) {
     New-Item -ItemType Directory -Path $metricsDir | Out-Null
@@ -11,14 +11,13 @@ if (-not (Test-Path $csvPath)) {
     # Create CSV with headers only - no dummy data row
     $headers = @{
         Timestamp         = ''
-        CPU_Percent       = [int]0
-        RAM_Percent       = [double]0
+        CPU_Used_Percent       = [int]0
+        RAM_Used_Percent       = [double]0
+        RAM_Total_GB      = [double]0
+        RAM_Free_GB       = [double]0
+        Disk_Used_Percent = [double]0
         Disk_Total_GB     = [double]0
         Disk_Free_GB      = [double]0
-        Disk_Used_Percent = [double]0
-        Total_Mem_MB      = [double]0
-        Mem_Free_MB       = [double]0
-        Mem_Used_Percent  = [double]0
     }
     $headers.GetEnumerator() | 
         ForEach-Object { $_.Value = $null } # clear values to just create header
@@ -29,19 +28,14 @@ if (-not (Test-Path $csvPath)) {
 
 while ($true) {
     $timestamp = Get-Date
-    $roundedMinute = Get-Date -Year $timestamp.Year -Month $timestamp.Month -Day $timestamp.Day `
-    -Hour $timestamp.Hour -Minute $timestamp.Minute -Second 0
-
 
     $cpuLoad = (Get-CimInstance Win32_Processor | Measure-Object -Property LoadPercentage -Average).Average
 
     $ram = Get-CimInstance Win32_OperatingSystem
     $ramUsedPercent = [math]::Round((($ram.TotalVisibleMemorySize - $ram.FreePhysicalMemory) / $ram.TotalVisibleMemorySize) * 100, 2)
 
-    $totalMem = [math]::Round($ram.TotalVisibleMemorySize / 1024, 2)  # MB
-    $freeMem  = [math]::Round($ram.FreePhysicalMemory / 1024, 2)      # MB
-    $usedMem  = [math]::Round($totalMem - $freeMem, 2)
-    $memPercentUsed = [math]::Round(($usedMem / $totalMem) * 100, 2)
+    $totalRAM = [math]::Round($ram.TotalVisibleMemorySize / 1024 / 1000, 2)  # in GB
+    $freeRAM  = [math]::Round($ram.FreePhysicalMemory / 1024 / 1000, 2)      # in GB
 
     $disk = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'"
     $diskTotal = $disk.Size
@@ -56,16 +50,13 @@ while ($true) {
     }
 
     [PSCustomObject]@{
-        Timestamp         = $roundedMinute
+        Timestamp         = $timestamp
         CPU_Percent       = $cpuLoad
         RAM_Percent       = $ramUsedPercent
+        RAM_Total_MB      = $totalRAM
+        RAM_Free_GB       = $freeRAM
+        Disk_Used_Percent = $diskUsedPercent
         Disk_Total_GB     = $totalSizeGB
         Disk_Free_GB      = $diskFreeGB
-        Disk_Used_Percent = $diskUsedPercent
-        Total_Mem_MB      = $totalMem
-        Mem_Free_MB       = $freeMem
-        Mem_Used_Percent  = $memPercentUsed
     } | Export-Csv -Path $csvPath -NoTypeInformation -Append
-
-    Start-Sleep -Seconds $intervalSeconds
 }

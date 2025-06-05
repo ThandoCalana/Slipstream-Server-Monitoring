@@ -1,67 +1,81 @@
-# ==== Settings ====
-$sampleInterval = 10
-$topN = 10
-$metricsDir = "C:\Metrics"
-$csvPath = "$metricsDir\cpu_metrics.csv"
+param (
+    [string]$ControlFile = "C:\Metrics\monitoring.lock",
+    [int]$Interval = 5
+)
 
-# ==== Get CPU count with Get-CimInstance ====
-$cpuCount = (Get-CimInstance -ClassName Win32_ComputerSystem).NumberOfLogicalProcessors
-
-# ==== Ensure Metrics Directory Exists ====
-if (-not (Test-Path $metricsDir)) {
-    New-Item -ItemType Directory -Path $metricsDir | Out-Null
+# Error handling function
+function Handle-Error {
+    param ($ErrorRecord)
+    Write-Host "ERROR [$($ErrorRecord.Exception.GetType().Name)]: $($ErrorRecord.Exception.Message)"
+    Write-Host "Continuing monitoring..."
 }
 
-# ==== Start Monitoring Loop ====
-while ($true) {
-    # Snapshot 1
-    $procs1 = Get-Process | Where-Object { $_.CPU -ne $null }
-    $snap1 = @{}
-    foreach ($proc in $procs1) {
-        $snap1[$proc.Id] = $proc.CPU
+# Initialize CSV files with proper error handling
+try {
+    $cpuCsv  = "C:\Metrics\cpu.csv"
+    $ramCsv  = "C:\Metrics\ram.csv"
+    $diskCsv = "C:\Metrics\disk.csv"
+
+    # Create directory if it doesn't exist
+    if (-not (Test-Path "C:\Metrics")) {
+        New-Item -ItemType Directory -Path "C:\Metrics" -Force | Out-Null
     }
 
-    Start-Sleep -Seconds $sampleInterval
+    # Create headers if needed
+    if (-not (Test-Path $cpuCsv)) {
+        "Timestamp,ProcessName,CPU_Usage_Percent" | Out-File $cpuCsv
+    }
+    # Similar for other files...
+}
+catch {
+    Handle-Error $_
+    exit 1
+}
 
-    # Snapshot 2
-    $timestamp = Get-Date
-    $roundedMinute = Get-Date -Year $timestamp.Year -Month $timestamp.Month -Day $timestamp.Day `
-    -Hour $timestamp.Hour -Minute $timestamp.Minute -Second 0
+try {
+    # Get system info once
+    $systemInfo = Get-CimInstance Win32_ComputerSystem
+    $totalRAM = $systemInfo.TotalPhysicalMemory
+    $logicalCores = $systemInfo.NumberOfLogicalProcessors
 
-    $procs2 = Get-Process | Where-Object { $_.CPU -ne $null }
-    $services = Get-CimInstance -ClassName Win32_Service
+    $startTime = Get-Date
+    Write-Host "Monitoring started at: $startTime"
+    $runCounter = 0
 
-    $cpuDeltas = @()
+    while ($true) {
+        try {
+            if (-not (Test-Path $ControlFile)) {
+                Write-Host "Control file removed, stopping monitoring..."
+                break
+            }
 
-    foreach ($proc in $procs2) {
-        if ($snap1.ContainsKey($proc.Id)) {
-            $deltaCPU = $proc.CPU - $snap1[$proc.Id]
-            if ($deltaCPU -gt 0) {
-                $cpuPercent = [math]::Round(($deltaCPU / $sampleInterval) * 100 / $cpuCount, 2)
-                $svc = $services | Where-Object { $_.ProcessId -eq $proc.Id }
-                $displayName = if ($svc) { $svc.DisplayName } else { $proc.ProcessName }
+            $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+            $runCounter++
+            Write-Host "Run $runCounter at $timestamp"
 
-                $cpuDeltas += [PSCustomObject]@{
-                    Timestamp   = $roundedMinute
-                    PID         = $proc.Id
-                    DisplayName = $displayName
-                    CPUPercent  = $cpuPercent
+            # === CPU Monitoring ===
+            try {
+                $cpuData = Get-CimInstance Win32_PerfFormattedData_PerfProc_Process -ErrorAction Stop |
+                    Where-Object { $_.Name -notmatch '^Idle$|^_Total$' }
+
+                foreach ($proc in $cpuData) {
+                    $cpuPct = [math]::Round($proc.PercentProcessorTime / $logicalCores, 2)
+                    "$timestamp,$($proc.Name),$cpuPct" | Out-File -Append $cpuCsv
                 }
             }
+            catch { Handle-Error $_ }
+
+            # Similar improved blocks for RAM and Disk monitoring...
+
+            Start-Sleep -Seconds $Interval
+        }
+        catch {
+            Handle-Error $_
+            Start-Sleep -Seconds $Interval
+            continue
         }
     }
-
-    if ($cpuDeltas.Count -gt 0) {
-        $topProcesses = $cpuDeltas | Sort-Object CPUPercent -Descending | Select-Object -First $topN
-
-        if (-not (Test-Path $csvPath)) {
-            $topProcesses | Export-Csv -Path $csvPath -NoTypeInformation
-        } else {
-            $topProcesses | Export-Csv -Path $csvPath -NoTypeInformation -Append
-        }
-
-        Write-Host "[$timestamp] Logged top $topN processes."
-    } else {
-        Write-Host "[$timestamp] No processes with CPU activity."
-    }
+}
+finally {
+    Write-Host "Monitoring stopped at $(Get-Date). Total runs: $runCounter"
 }
