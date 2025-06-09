@@ -96,7 +96,7 @@ while ($true) {
         Write-Host "Disk Monitoring Error: $($_.Exception.Message)"
     }
 
-    Start-Sleep -Seconds 5
+    Start-Sleep -Seconds 1
 }
 
 Write-Host "Monitoring stopped at $(Get-Date). Total runs: $runCounter"
