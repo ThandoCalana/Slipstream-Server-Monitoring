@@ -1,4 +1,4 @@
-USE [Metric_DB]
+USE [server_monitoring]
 GO
 
 /****** Object:  Table [dbo].[cpu_metrics]    Script Date: 19-Jun-25 2:46:18 PM ******/
